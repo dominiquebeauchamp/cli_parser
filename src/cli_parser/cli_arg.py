@@ -117,16 +117,18 @@ def _get_man_page(orig_func: Callable[P, R]) -> Tuple[str, str, str]:
     res = re.search(r'#NAME\s+{{{(?P<shortdesc>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE)
-    prolog = f'NAME\n\t{Path(__file__).name} - ' +\
+    prolog = f'NAME\n\t{orig_func.__qualname__} - ' +\
         res.group('shortdesc') if res is not None else '...'
     
     prolog += '\n\nSYNOPSIS\n'
+
+    midlog = f'\t       {orig_func.__qualname__} % \n\t\t# Reuse the previously used arguments.\n'
 
     # #DESCRIPTION {{{description}}}
     res = re.search(r'#DESCRIPTION\s+{{{(?P<desc>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    midlog = 'DESCRIPTION\n' + textwrap.indent(textwrap.dedent(res.group('desc') + '\n') if res is not None else '...\n', '\t')
+    midlog += '\nDESCRIPTION\n' + textwrap.indent(textwrap.dedent(res.group('desc') + '\n') if res is not None else '...\n', '\t')
 
     # #EXAMPLES {{{examples}}}
     res = re.search(r'#EXAMPLES\s+{{{(?P<examples>(?:(?!}}}).)+)',
@@ -183,9 +185,9 @@ def _get_cli_arg_wrapper(func: Callable[P, R],
         parser = argparse.ArgumentParser(fromfile_prefix_chars='@',
                                          formatter_class=argparse.RawDescriptionHelpFormatter)
 
-        if len(sys.argv) == 2 and sys.argv[1] == '#':
+        if len(sys.argv) == 2 and sys.argv[1] == '%':
             # Load arguments from ~/.params... file when there is only one argument: "#"
-            cli_arguments = _load_arguments(orig_func)
+            parsed = _load_arguments(orig_func)
         else:
             # Get the arguments from the original function attribute _cli_arguments
             cli_arguments = orig_func._cli_arguments
