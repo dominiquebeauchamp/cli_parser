@@ -45,18 +45,16 @@ def _get_arguments_file_path(orig_func: Callable[P, R]) -> Path:
     """
     Construct the file path for saving or loading CLI parameters for a function.
 
-    The path is built based on the function's Python module, qualified name,
-    and the user's home directory, enabling uniquely identifying each function's
-    parameter set.
+    The path is built based on the function's Python qualified name, and the user's 
+    home directory, enabling uniquely identifying each function's parameter set.
 
     Args:
         orig_func: The function whose settings file location is calculated.
     Returns:
         Path object for the arguments file location.
     """
-    module_name = orig_func.__module__ if hasattr(orig_func, '__module__') else ''
     func_name = orig_func.__qualname__ if hasattr(orig_func, '__qualname__') else orig_func.__name__
-    file_path = (Path('~').expanduser() / '.params' / __package__ / module_name / func_name).with_suffix('.par')
+    file_path = (Path('~').expanduser() / '.params' / __package__ / func_name).with_suffix('.par')
     return file_path
 
 
@@ -119,7 +117,7 @@ def _get_man_page(orig_func: Callable[P, R]) -> Tuple[str, str, str]:
     res = re.search(r'#NAME\s+{{{(?P<shortdesc>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE)
-    prolog = f'NAME\n\t{orig_func.__qualname__} - ' +\
+    prolog = f'NAME\n\t{Path(__file__).name} - ' +\
         res.group('shortdesc') if res is not None else '...'
     
     prolog += '\n\nSYNOPSIS\n'
