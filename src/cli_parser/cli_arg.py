@@ -128,37 +128,37 @@ def _get_man_page(orig_func: Callable[P, R]) -> Tuple[str, str, str]:
     res = re.search(r'#DESCRIPTION\s+{{{(?P<desc>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    midlog = 'DESCRIPTION\n' + textwrap.indent(textwrap.dedent(res.group('desc')) if res is not None else '...\n', '\t')
+    midlog = 'DESCRIPTION\n' + textwrap.indent(textwrap.dedent(res.group('desc') + '\n') if res is not None else '...\n', '\t')
 
     # #EXAMPLES {{{examples}}}
     res = re.search(r'#EXAMPLES\s+{{{(?P<examples>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    epilog = 'EXAMPLES\n' + textwrap.indent(textwrap.dedent(res.group('examples')) if res is not None else '...\n', '\t')
+    epilog = 'EXAMPLES\n' + textwrap.indent(textwrap.dedent(res.group('examples' + '\n')) if res is not None else '...\n', '\t')
     
     # #AUTHOR {{{author}}}
     res = re.search(r'#AUTHOR\s+{{{(?P<author>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    epilog += '\nAUTHOR\n' + textwrap.indent(textwrap.dedent(res.group('author')) if res is not None else '...\n', '\t')
+    epilog += '\nAUTHOR\n' + textwrap.indent(textwrap.dedent(res.group('author') + '\n') if res is not None else '...\n', '\t')
     
     # #REPORTING_BUGS {{{reporting_bugs}}}
     res = re.search(r'#REPORTING_BUGS\s+{{{(?P<reporting_bugs>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    epilog += '\nREPORTING BUGS\n' + textwrap.indent(textwrap.dedent(res.group('reporting_bugs')) if res is not None else '...\n', '\t')
+    epilog += '\nREPORTING BUGS\n' + textwrap.indent(textwrap.dedent(res.group('reporting_bugs' + '\n')) if res is not None else '...\n', '\t')
     
     # #COPYRIGHT {{{copyright}}}
     res = re.search(r'#COPYRIGHT\s+{{{(?P<copyright>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    epilog += '\nCOPYRIGHT\n' + textwrap.indent(textwrap.dedent(res.group('examples')) if res is not None else '...\n', '\t')
+    epilog += '\nCOPYRIGHT\n' + textwrap.indent(textwrap.dedent(res.group('copyright') + '\n') if res is not None else '...\n', '\t')
     
     # #SEE_ALSO {{{see_also}}}
     res = re.search(r'#SEE_ALSO\s+{{{(?P<see_also>(?:(?!}}}).)+)',
                     orig_func.__doc__,
                     re.MULTILINE | re.DOTALL)
-    epilog += '\nSEE ALSO\n' + textwrap.indent(textwrap.dedent(res.group('see_also')) if res is not None else '...\n', '\t')
+    epilog += '\nSEE ALSO\n' + textwrap.indent(textwrap.dedent(res.group('see_also') + '\n') if res is not None else '...\n', '\t')
 
     return prolog, midlog, epilog
 
