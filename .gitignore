@@ -1,3 +1,4 @@
 /.vscode
 /.continue/
 /src/cli_parser/__pycache__
+/dist
