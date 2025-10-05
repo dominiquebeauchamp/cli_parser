@@ -2,3 +2,5 @@
 /.continue/
 /src/cli_parser/__pycache__
 /dist
+*.egg-info/
+make_install.sh
