@@ -9,6 +9,9 @@ import re
 import textwrap
 import io
 from contextlib import redirect_stdout
+import os
+import subprocess
+
 
 P = ParamSpec('P')
 R = TypeVar('R')
@@ -95,6 +98,30 @@ def _load_arguments(orig_func: Callable[P, R]) -> dict:
             arguments = json.load(args_file)
         return arguments
     return {}
+
+
+def _edit_arguments(orig_func: Callable[P, R]):
+    """
+    Opens the saved CLI arguments file for the specified function in the text editor defined by the EDITOR environment variable.
+
+    This function allows the user to manually edit the parameters file associated with the given function,
+    launching the text editor configured via the EDITOR environment variable. The file is only opened for editing
+    if it already exists.
+
+    Args:
+        orig_func: The function whose saved CLI parameters should be edited.
+
+    Note:
+        If the EDITOR environment variable is not set, or if the parameter file does not exist, nothing will be launched.
+    """
+    default_editor = os.environ.get('EDITOR', default=None)
+    if default_editor is not None:
+        file_path = _get_arguments_file_path(orig_func)
+        if file_path.is_file():
+            default_editor_splitted = default_editor.split(' ')
+            cmd = default_editor_splitted
+            cmd.append(str(file_path))
+            proc_result = subprocess.run(cmd)
 
 
 def _get_man_page(orig_func: Callable[P, R]) -> Tuple[str, str, str]:
@@ -186,6 +213,9 @@ def _get_cli_arg_wrapper(func: Callable[P, R],
                                          formatter_class=argparse.RawDescriptionHelpFormatter)
 
         if len(sys.argv) == 2 and sys.argv[1] == '%':
+            # Edit the arguments in a text editor prior to loading them here.
+            _edit_arguments(orig_func)
+            
             # Load arguments from ~/.params... file when there is only one argument: "#"
             parsed = _load_arguments(orig_func)
         else:
