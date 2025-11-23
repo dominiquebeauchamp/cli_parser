@@ -70,3 +70,53 @@ def existing_fits_file_name(value: str) -> str:
         if not first_line.startswith(b'SIMPLE  =                    T'):
             raise argparse.ArgumentTypeError('Invalid FITS file name: invalid FITS file.')
     return str(file_path)
+
+
+def existing_directory(value: str) -> str:
+    """
+    Validates that the provided string corresponds to an existing directory path.
+
+    Expands user tilde (~), checks if the resulting path exists and is a directory.
+    Raises an argparse.ArgumentError if the directory does not exist.
+
+    Args:
+        value (str): Directory path as a string (can include user '~').
+
+    Returns:
+        str: The absolute directory path as a string.
+
+    Raises:
+        argparse.ArgumentError: If the directory does not exist.
+
+    Example:
+        parser.add_argument('--mydir', type=existing_directory)
+    """
+    dir_path = Path(value).expanduser()
+    if not dir_path.is_dir():
+        raise argparse.ArgumentError('Directory not found.')
+    return str(dir_path)
+
+
+def existing_file(value: str) -> str:
+    """
+    Validates that the provided string corresponds to an existing file path.
+
+    Expands user tilde (~), checks if the resulting path exists and is a file.
+    Raises an argparse.ArgumentError if the file does not exist.
+
+    Args:
+        value (str): File path as a string (can include user '~').
+
+    Returns:
+        str: The absolute file path as a string.
+
+    Raises:
+        argparse.ArgumentError: If the file does not exist.
+
+    Example:
+        parser.add_argument('--myfile', type=existing_file)
+    """
+    file_path = Path(value).expanduser()
+    if not file_path.is_file():
+        raise argparse.ArgumentError('File not found.')
+    return str(file_path)
