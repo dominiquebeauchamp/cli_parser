@@ -5,22 +5,18 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cli_parser"
 version = "0.1.0"
-description = "Command-line argument parser customizable with decorators"
-authors = [
-    { name = "Dominique Beauchamp", email = "lgd.beauchamp@gmail.com" }
-]
-readme = "README.md"
+dependencies = []
 requires-python = ">=3.12"
-license = { text = "MIT" }
+authors = [{ name = "Dominique Beauchamp", email = "lgd.beauchamp@gmail.com" }]
+description = "Command-line argument parser customizable with decorators"
+readme = "README.md"
+license = "MIT"
 license-files = ["LICENSE*"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
-    "Topic :: Software Development :: Libraries :: Application Frameworks"
-]
-dependencies = [
+    "Topic :: Software Development :: Application Frameworks"
 ]
 
 [project.urls]
