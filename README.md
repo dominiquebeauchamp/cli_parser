@@ -1,6 +1,6 @@
-# cli_arg
+# cli_parser
 
-A Python command-line tool framework that lets you define CLI parsers with simple, composable decorators.
+A Python framework that lets you define CLI argument parsers with simple, composable decorators.
 
 ## Overview
 
@@ -15,14 +15,14 @@ This project allows you to declare command-line arguments directly on functions 
 
 ## Installation
 
-You can simply copy the `cli_arg.py` module to your project or install it as a package (instructions to be added once published).
+You can install it as a package (instructions to be added once published).
 
 ## Usage
 
 ### Example
 
 ```python
-from cli_parser.cli_arg import cli_arg
+from cli_parser import cli_arg
 
 @cli_arg('--foo', type=int, required=True, help='The foo number')
 @cli_arg('--bar', default='abc', help='The bar string')

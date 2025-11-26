@@ -3,15 +3,16 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cli_arg"
+name = "cli_parser"
 version = "0.1.0"
-description = "Command-line tool customizable with decorators"
+description = "Command-line argument parser customizable with decorators"
 authors = [
     { name = "Dominique Beauchamp", email = "lgd.beauchamp@gmail.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
+license-files = ["LICENSE*"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -20,11 +21,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks"
 ]
 dependencies = [
-    # Ajoute ici les dépendances de ton projet, exemple :
-    # "click>=8.0" 
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourname/my_cli"
-Repository = "https://github.com/yourname/my_cli"
-Issues = "https://github.com/yourname/my_cli/issues"
+Homepage = "https://github.com/dominiquebeauchamp/cli_parser"
+Repository = "https://github.com/dominiquebeauchamp/cli_parser"
+Issues = "https://github.com/dominiquebeauchamp/cli_parser/issues"
